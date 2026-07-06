@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOLAK Modeli™ — Canlı Simülasyon</title>
+<style>
+  :root{
+    --ink:#1f2a37;--muted:#64748b;--line:#dbe3ee;
+    --ai:#2f855a;--ai-bg:#eaf7ef;--human:#9a3b5a;--human-bg:#fbeef2;
+    --stage:#1f4e79;--kill:#b45309;--kill-bg:#fdf2e3;--gov:#6d28d9;--loop:#0e7490;
+    --bg:#eef2f8;--card:#fff;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.5;}
+  .wrap{max-width:760px;margin:0 auto;padding:18px 14px 60px;}
+  header{text-align:center;margin-bottom:14px;}
+  h1{margin:0;font-size:24px;font-weight:800;color:var(--stage);letter-spacing:-.4px;}
+  h1 .tm{font-size:12px;vertical-align:super;color:var(--gov);}
+  .tagline{margin:4px 0 0;font-size:13px;color:var(--muted);}
+  .author{margin:2px 0 0;font-size:11.5px;color:#94a3b8;}
+
+  /* stepper */
+  .stepper{display:flex;gap:4px;margin:14px 0;overflow-x:auto;padding-bottom:4px;}
+  .step{flex:1 0 auto;min-width:66px;text-align:center;background:#fff;border:1px solid var(--line);border-radius:10px;padding:7px 5px;font-size:10.5px;font-weight:700;color:#9aa7b8;transition:.3s;}
+  .step .ic{font-size:15px;display:block;margin-bottom:2px;}
+  .step.active{background:var(--stage);color:#fff;border-color:var(--stage);transform:translateY(-2px);box-shadow:0 4px 10px rgba(31,78,121,.25);}
+  .step.done{background:var(--ai-bg);color:var(--ai);border-color:#bfe3cc;}
+  .step.kill{background:var(--kill-bg);color:var(--kill);border-color:#f0c893;}
+
+  .controls{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:14px;}
+  select,button{font-family:inherit;font-size:14px;border-radius:10px;border:1px solid var(--line);padding:11px 14px;cursor:pointer;}
+  select{background:#fff;color:var(--ink);font-weight:600;flex:1 1 200px;min-width:180px;}
+  .btn{font-weight:700;border:none;color:#fff;background:var(--stage);transition:.2s;flex:1 1 160px;}
+  .btn:hover{filter:brightness(1.08);}
+  .btn:active{transform:scale(.98);}
+  .btn.ghost{background:#fff;color:var(--stage);border:1.5px solid var(--stage);}
+  .btn[disabled]{opacity:.45;cursor:not-allowed;}
+
+  .stage-card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 2px 8px rgba(16,24,40,.06);overflow:hidden;min-height:220px;}
+  .sc-head{padding:13px 16px;color:#fff;background:var(--stage);display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .sc-head .n{font-size:11px;opacity:.85;font-weight:600;letter-spacing:.5px;}
+  .sc-head .t{font-size:17px;font-weight:800;margin-top:1px;}
+  .sc-head .idea{font-size:11px;background:rgba(255,255,255,.2);padding:4px 9px;border-radius:20px;font-weight:600;text-align:right;}
+  .sc-body{padding:15px 16px;}
+
+  .check{display:flex;align-items:center;gap:10px;background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px;font-size:13.5px;font-weight:600;transition:.3s;}
+  .check .st{width:22px;height:22px;flex:0 0 22px;border-radius:50%;border:2px solid #cbd5e1;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;}
+  .check.pending{opacity:.6;}
+  .check.run .st{border-color:var(--stage);animation:spin 1s linear infinite;border-top-color:transparent;}
+  .check.pass{background:var(--ai-bg);border-color:#bfe3cc;color:#23543c;}
+  .check.pass .st{background:var(--ai);border-color:var(--ai);}
+  .check.warn{background:var(--kill-bg);border-color:#f0c893;color:#8a4008;}
+  .check.warn .st{background:var(--kill);border-color:var(--kill);}
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  .agent{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:#0b5566;background:#eafcff;border:1px solid #bfe8f0;border-radius:9px;padding:9px 12px;margin-top:4px;}
+  .agent.hidden{display:none;}
+  .dots::after{content:"";animation:dots 1.4s steps(4,end) infinite;}
+  @keyframes dots{0%{content:"";}25%{content:".";}50%{content:"..";}75%{content:"...";}100%{content:"";}}
+
+  .gate{margin-top:14px;border:1.5px dashed var(--human);background:var(--human-bg);border-radius:12px;padding:13px;text-align:center;}
+  .gate.hidden{display:none;}
+  .gate .q{font-size:14px;font-weight:800;color:#7a2d47;}
+  .gate .lbl{font-size:10.5px;font-weight:700;color:var(--human);text-transform:uppercase;letter-spacing:.4px;}
+  .gate-btns{display:flex;gap:8px;margin-top:11px;flex-wrap:wrap;}
+  .gate-btns button{flex:1 1 30%;font-size:13px;padding:11px 8px;}
+  .g-yes{background:var(--ai);}
+  .g-ref{background:var(--kill);}
+  .g-kill{background:#64748b;}
+
+  .final{text-align:center;padding:10px 4px;}
+  .final .big{font-size:40px;}
+  .final .h{font-size:18px;font-weight:800;margin-top:6px;}
+  .final.launch .h{color:var(--ai);}
+  .final.killed .h{color:var(--kill);}
+  .loopviz{margin-top:12px;background:#e6f4f7;border:1.5px solid var(--loop);border-radius:12px;padding:12px;font-size:12.5px;color:#0b5566;font-weight:600;text-align:center;}
+
+  .log{margin-top:16px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:6px 4px;}
+  .log h3{margin:8px 12px;font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:#94a3b8;}
+  .log ul{list-style:none;margin:0;padding:0 6px 6px;max-height:210px;overflow-y:auto;}
+  .log li{font-size:12.5px;padding:7px 10px;border-radius:8px;margin:3px 0;display:flex;gap:8px;align-items:flex-start;animation:slideIn .3s ease;}
+  .log li .tg{flex:0 0 auto;font-size:10px;font-weight:800;border-radius:6px;padding:2px 6px;color:#fff;margin-top:1px;}
+  .log .t-ai{background:var(--ai);}.log .t-human{background:var(--human);}.log .t-sys{background:var(--stage);}
+  .log .t-kill{background:var(--kill);}.log .t-loop{background:var(--loop);}.log .t-gov{background:var(--gov);}
+  @keyframes slideIn{from{opacity:0;transform:translateX(-6px);}to{opacity:1;transform:none;}}
+
+  .legend{margin-top:16px;font-size:11px;color:var(--muted);text-align:center;line-height:1.7;}
+  footer{margin-top:22px;text-align:center;font-size:11px;color:#94a3b8;}
+  .hint{text-align:center;font-size:12.5px;color:var(--muted);margin:10px 0 0;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>SOLAK Modeli<span class="tm">™</span> — Canlı Simülasyon</h1>
+    <p class="tagline">Bir fikrin, AI-destekli inovasyon sisteminde adım adım nasıl ilerlediğini izleyin.</p>
+    <p class="author">Yeni Nesil AI-Destekli İnovasyon Sistemi · © 2026 Tumay Solak</p>
+  </header>
+
+  <div class="controls">
+    <select id="ideaSel" aria-label="Örnek fikir seçin">
+      <option value="0">💡 Örnek: Akıllı Geri Dönüşüm Kutusu</option>
+      <option value="1">💡 Örnek: AI Destekli Dil Öğrenme Uygulaması</option>
+      <option value="2">💡 Örnek: Kişiselleştirilmiş Sağlıklı Atıştırmalık</option>
+    </select>
+    <button class="btn" id="startBtn">▶ Simülasyonu Başlat</button>
+    <button class="btn ghost" id="resetBtn">↻ Sıfırla</button>
+  </div>
+
+  <div class="stepper" id="stepper"></div>
+
+  <div class="stage-card">
+    <div class="sc-head">
+      <div><div class="n" id="scNum">HAZIR</div><div class="t" id="scTitle">Başlamak için “Başlat”a dokunun</div></div>
+      <div class="idea" id="scIdea">—</div>
+    </div>
+    <div class="sc-body" id="scBody">
+      <p class="hint">Bir örnek fikir seçin ve simülasyonu başlatın. Her fazda yapay zekâ kontrolleri değerlendirir; kritik kararı <b>siz (insan)</b> verirsiniz.</p>
+    </div>
+  </div>
+
+  <div class="log">
+    <h3>İşlem Günlüğü</h3>
+    <ul id="logList"></ul>
+  </div>
+
+  <p class="legend">
+    🟢 AI otomatik değerlendirme &nbsp;·&nbsp; 🟣 Sorumlu AI &amp; uyum &nbsp;·&nbsp; 🔵 sistem/faz &nbsp;·&nbsp; 🌸 insan kararı &nbsp;·&nbsp; 🟠 iyileştir/ele &nbsp;·&nbsp; 🔷 öğrenme döngüsü
+  </p>
+  <footer>SOLAK Modeli™ · “AI önerir ve hızlandırır; insan yön verir ve karar verir.” · © 2026 Tumay Solak</footer>
+</div>
+
+<script>
+const IDEAS = [
+  {name:"Akıllı Geri Dönüşüm Kutusu", short:"Akıllı Kutu"},
+  {name:"AI Destekli Dil Öğrenme Uygulaması", short:"Dil App"},
+  {name:"Kişiselleştirilmiş Sağlıklı Atıştırmalık", short:"Atıştırmalık"}
+];
+
+const PHASES = [
+  { key:"discovery", num:"FAZ 1", title:"AI-Destekli Keşif", agent:"AI ajanı: pazar & rakip araştırması yürütüyor",
+    checks:["Strateji ile uyumlu","Arzu edilir · Uygulanabilir · Yaşayabilir","Bütçeye uygun"], gate:"Geliştirmeye geç?" },
+  { key:"develop", num:"FAZ 2", title:"AI-Destekli Geliştirme", agent:"AI ajanı: hızlı prototip & kod üretiyor",
+    checks:["Hipotez test edilebilir","Prototip test edilebilir","İş modeli rekabetçi"], gate:"Teste geç?" },
+  { key:"validate", num:"FAZ 3", title:"AI-Destekli Doğrulama", agent:"AI ajanı: A/B testi & veri analizi yapıyor",
+    checks:["PoC olumlu","Pilot olumlu","Tüm testler olumlu"], gate:"Lansmana geç?" },
+];
+
+const STEPS = [
+  {ic:"💡",label:"Fikir"},{ic:"1",label:"Keşif"},{ic:"2",label:"Geliştirme"},
+  {ic:"3",label:"Doğrulama"},{ic:"🚀",label:"Lansman"},{ic:"🔄",label:"Öğrenme"}
+];
+
+let state = { idea:0, phase:-1, refineCount:0, running:false };
+
+const $ = s=>document.querySelector(s);
+const stepperEl=$("#stepper"), logEl=$("#logList");
+const scNum=$("#scNum"), scTitle=$("#scTitle"), scIdea=$("#scIdea"), scBody=$("#scBody");
+const startBtn=$("#startBtn"), resetBtn=$("#resetBtn"), ideaSel=$("#ideaSel");
+
+function buildStepper(){
+  stepperEl.innerHTML="";
+  STEPS.forEach((s,i)=>{
+    const d=document.createElement("div"); d.className="step"; d.dataset.i=i;
+    d.innerHTML=`<span class="ic">${s.ic}</span>${s.label}`;
+    stepperEl.appendChild(d);
+  });
+}
+function setStep(activeIdx, killed){
+  [...stepperEl.children].forEach((el,i)=>{
+    el.className="step";
+    if(killed && i===activeIdx){el.classList.add("kill");return;}
+    if(i<activeIdx) el.classList.add("done");
+    else if(i===activeIdx) el.classList.add("active");
+  });
+}
+function log(tag, cls, text){
+  const li=document.createElement("li");
+  li.innerHTML=`<span class="tg ${cls}">${tag}</span><span>${text}</span>`;
+  logEl.appendChild(li); logEl.scrollTop=logEl.scrollHeight;
+}
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+
+function reset(){
+  state={idea:+ideaSel.value, phase:-1, refineCount:0, running:false};
+  buildStepper(); setStep(0,false); logEl.innerHTML="";
+  scNum.textContent="HAZIR"; scTitle.textContent="Başlamak için “Başlat”a dokunun";
+  scIdea.textContent="—";
+  scBody.innerHTML='<p class="hint">Bir örnek fikir seçin ve simülasyonu başlatın. Her fazda yapay zekâ kontrolleri değerlendirir; kritik kararı <b>siz (insan)</b> verirsiniz.</p>';
+  startBtn.disabled=false; startBtn.textContent="▶ Simülasyonu Başlat";
+}
+
+async function start(){
+  if(state.running) return;
+  reset(); state.running=true; startBtn.disabled=true;
+  const idea=IDEAS[state.idea];
+  scIdea.textContent="💡 "+idea.short;
+  log("SİSTEM","t-sys",`“${idea.name}” fikri üç kaynaktan gelen fikirlerle birlikte <b>AI Fikir Havuzu</b>'na girdi ve otomatik puanlandı.`);
+  await wait(900);
+  log("SİSTEM","t-sys","Yüksek potansiyelli fikir olarak ilk faza yönlendirildi.");
+  await wait(700);
+  runPhase(0);
+}
+
+async function runPhase(pi){
+  state.phase=pi;
+  const p=PHASES[pi], idea=IDEAS[state.idea];
+  setStep(pi+1,false);
+  scNum.textContent=p.num; scTitle.textContent=p.title;
+  // build checks
+  scBody.innerHTML="";
+  const cont=document.createElement("div");
+  p.checks.forEach((c,ci)=>{
+    const d=document.createElement("div"); d.className="check pending"; d.id="chk"+ci;
+    d.innerHTML=`<span class="st"></span><span>${c}</span>`; cont.appendChild(d);
+  });
+  const agent=document.createElement("div"); agent.className="agent hidden"; agent.id="agent";
+  agent.innerHTML=`⚙️ <span>${p.agent}<span class="dots"></span></span>`;
+  cont.appendChild(agent);
+  const gate=document.createElement("div"); gate.className="gate hidden"; gate.id="gate";
+  cont.appendChild(gate);
+  scBody.appendChild(cont);
+
+  log("SİSTEM","t-sys",`<b>${p.num} — ${p.title}</b> başladı. Çevik sprint içinde AI değerlendirme yürütülüyor.`);
+  $("#agent").classList.remove("hidden");
+  await wait(700);
+
+  // evaluate checks; on first pass of validate phase, force one warn to show refinement branch
+  const forceWarn = (pi===2 && state.refineCount===0) ? 1 : -1;
+  for(let ci=0; ci<p.checks.length; ci++){
+    const el=$("#chk"+ci); el.classList.remove("pending"); el.classList.add("run");
+    await wait(760);
+    el.classList.remove("run");
+    if(ci===forceWarn){
+      el.classList.add("warn"); el.querySelector(".st").textContent="!";
+      log("AI","t-ai",`Kontrol: “${p.checks[ci]}” → <b>riskli</b>. AI iyileştirme öneriyor.`);
+    }else{
+      el.classList.add("pass"); el.querySelector(".st").textContent="✓";
+      log("AI","t-ai",`Kontrol: “${p.checks[ci]}” → olumlu.`);
+    }
+    await wait(180);
+  }
+  $("#agent").classList.add("hidden");
+  // governance
+  log("UYUM","t-gov","Sorumlu AI & Uyum denetimi: etik, gizlilik ve regülasyon kontrolü tamam.");
+  await wait(500);
+
+  showGate(pi, forceWarn>=0);
+}
+
+function showGate(pi, hadWarn){
+  const p=PHASES[pi], gate=$("#gate");
+  gate.classList.remove("hidden");
+  gate.innerHTML=`<div class="lbl">👤 İnsan Onay Noktası</div>
+    <div class="q">${p.gate}</div>
+    <div class="gate-btns">
+      <button class="btn g-yes">✅ Onayla</button>
+      <button class="btn g-ref">🔁 İyileştir</button>
+      <button class="btn g-kill">❌ Ele</button>
+    </div>`;
+  if(hadWarn){
+    const hint=document.createElement("div");
+    hint.style.cssText="font-size:11.5px;color:#8a4008;margin-top:8px;";
+    hint.innerHTML="⚠️ AI bir riskli kontrol buldu — “İyileştir” önerilir.";
+    gate.appendChild(hint);
+  }
+  log("İNSAN","t-human",`Karar bekleniyor: <b>${p.gate}</b>`);
+  gate.querySelector(".g-yes").onclick=()=>decide("yes",pi);
+  gate.querySelector(".g-ref").onclick=()=>decide("ref",pi);
+  gate.querySelector(".g-kill").onclick=()=>decide("kill",pi);
+}
+
+async function decide(kind, pi){
+  const p=PHASES[pi], gate=$("#gate");
+  gate.classList.add("hidden");
+  if(kind==="kill"){
+    log("ELE","t-kill",`İnsan kararı: fikir <b>elendi</b>. Kaynaklar daha yüksek getirili fikirlere aktarılır.`);
+    setStep(pi+1,true); endKilled(); return;
+  }
+  if(kind==="ref"){
+    state.refineCount++;
+    log("İYİLEŞTİR","t-kill",`İnsan kararı: <b>AI ile iyileştir</b>. Fikir revize edilip aynı faz yeniden değerlendiriliyor.`);
+    await wait(600);
+    runPhase(pi); return;
+  }
+  // yes
+  log("İNSAN","t-human",`İnsan kararı: <b>Onaylandı</b> → sonraki aşamaya geçiliyor.`);
+  await wait(600);
+  if(pi < PHASES.length-1){ runPhase(pi+1); }
+  else { launch(); }
+}
+
+async function launch(){
+  setStep(4,false);
+  scNum.textContent="FAZ 4"; scTitle.textContent="AI-Destekli Lansman";
+  scBody.innerHTML=`<div class="final launch"><div class="big">🚀</div><div class="h">Ürün sahaya çıktı!</div>
+    <p class="hint">AI ajanı kampanyayı yürütür ve performansı canlı izler.</p></div>`;
+  log("SİSTEM","t-sys","<b>FAZ 4 — Lansman</b>: ürün pazara sunuldu; AI kampanya & performans izlemeyi başlattı.");
+  await wait(1100);
+  // feedback loop
+  setStep(5,false);
+  log("DÖNGÜ","t-loop","Lansman sonrası kullanım verisi ve müşteri geri bildirimi AI tarafından toplanıyor.");
+  const loop=document.createElement("div"); loop.className="loopviz";
+  loop.innerHTML="🔄 Öğrenilenler <b>Fikir Havuzu</b>'na geri besleniyor — sistem sürekli öğreniyor.";
+  scBody.querySelector(".final").appendChild(loop);
+  await wait(1100);
+  log("DÖNGÜ","t-loop","Kapalı öğrenme döngüsü tamamlandı: içgörüler yeni fikirlere dönüştü.");
+  await wait(500);
+  const done=document.createElement("div");
+  done.style.cssText="margin-top:12px;font-weight:800;color:var(--stage);font-size:15px;text-align:center;";
+  done.textContent="✔ Simülasyon tamamlandı";
+  scBody.querySelector(".final").appendChild(done);
+  state.running=false; startBtn.disabled=false; startBtn.textContent="▶ Yeniden Başlat";
+  log("SİSTEM","t-sys","Süreç, doğrusal bir hat değil; sürekli öğrenen bir <b>döngü</b> olarak yeniden başlayabilir.");
+}
+
+function endKilled(){
+  scNum.textContent="SONLANDI"; scTitle.textContent="Fikir Elendi";
+  scBody.innerHTML=`<div class="final killed"><div class="big">🛑</div><div class="h">Fikir bu fazda elendi</div>
+    <p class="hint">Bu da modelin bir parçası: zayıf fikirler erken elenerek kaynak korunur. Başka bir fikirle tekrar deneyin.</p></div>`;
+  state.running=false; startBtn.disabled=false; startBtn.textContent="▶ Yeniden Başlat";
+}
+
+startBtn.onclick=start;
+resetBtn.onclick=reset;
+ideaSel.onchange=reset;
+reset();
+</script>
+</body>
+</html>
