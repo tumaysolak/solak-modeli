@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SOLAK Modeli™ — İnteraktif Metodoloji Simülasyonu</title>
+<title>SOLAK™ Modeli — İnteraktif Metodoloji Simülasyonu</title>
 <style>
   :root{
     --ink:#1f2a37;--muted:#64748b;--line:#dbe3ee;
@@ -139,14 +139,14 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>SOLAK Modeli<span class="tm">™</span> — İnteraktif Metodoloji Simülasyonu</h1>
-    <p class="tagline">Bir fikri seçin; yeni nesil AI-destekli inovasyon sisteminin her adımını, hangi ilkeye dayandığıyla birlikte izleyin.</p>
+    <h1>SOLAK<span class="tm">™</span> Modeli — İnteraktif Metodoloji Simülasyonu</h1>
+    <p class="tagline">Mevcut fikir yönetim yazılımları için <b>yapay zekâ entegrasyon katmanı</b>. Yazılımınızdaki bir fikri seçin; SOLAK'ın onu AI ile nasıl değerlendirip lansmana taşıdığını izleyin.</p>
   </header>
 
   <!-- INTRO -->
   <div class="intro" id="intro">
     <h2>Bu simülasyon ne gösterir?</h2>
-    <p>SOLAK Modeli, fikir üretiminden lansman sonrası öğrenmeye kadar tüm süreci <b>yapay zekâ</b> ile yönetir; kritik geçişlerde kararı <b>insan</b> verir. Aşağıdaki 5 ilke sürecin “DNA”sıdır — simülasyon boyunca her adımın hangi ilkeye dayandığını sağdaki <b>Metodoloji Notu</b>'nda göreceksiniz.</p>
+    <p>SOLAK, sıfırdan bir süreç değildir. <b>Fırsat tanımlama ve fikir toplamayı mevcut fikir yönetim (idea management) yazılımınıza bırakır</b>; oradaki fikirleri alıp <b>yapay zekâ</b> ile değerlendirir, geliştirir, doğrular ve lansmana taşır — kritik geçişlerde kararı <b>insan</b> verir. Yani SOLAK, mevcut yazılımınızın üzerine geçen bir <b>AI entegrasyon katmanıdır</b>. Aşağıdaki 5 ilke bu katmanın “DNA”sıdır; her adımın hangi ilkeye dayandığını sağdaki <b>Metodoloji Notu</b>'nda göreceksiniz.</p>
     <div class="princhips">
       <div class="chip"><b style="background:#1f4e79">S</b> <span><b>Stratejik Hizalama</b> — fikir stratejiyle test edilir</span></div>
       <div class="chip"><b style="background:#6d28d9">O</b> <span><b>Orkestrasyon</b> — AI ajanları + sprintler yürütür</span></div>
@@ -210,7 +210,7 @@
       <button class="btn ghost" id="restartBtn">↻ Yeni Fikir / Baştan</button>
     </div>
   </div>
-  <footer>SOLAK Modeli™ · “AI önerir ve hızlandırır; insan yön verir ve karar verir.” · © 2026 Tumay Solak</footer>
+  <footer>SOLAK™ Modeli · “AI önerir ve hızlandırır; insan yön verir ve karar verir.” · © 2026 Tumay Solak</footer>
 </div>
 
 <script>
@@ -260,7 +260,7 @@ const PHASES=[
 let S={idea:0,phase:-1,iter:0,days:0,dec:0,running:false,speed:1};
 const $=s=>document.querySelector(s);
 const mapEl=$("#map"),logEl=$("#logList"),scNum=$("#scNum"),scTitle=$("#scTitle"),scIdea=$("#scIdea"),scBody=$("#scBody");
-const MAP=[{ic:"💡",l:"Girdi"},{ic:"1",l:"Keşif"},{ic:"2",l:"Geliştirme"},{ic:"3",l:"Doğrulama"},{ic:"🚀",l:"Lansman"},{ic:"🔄",l:"Öğrenme"}];
+const MAP=[{ic:"🗂️",l:"Mevcut Yazılım"},{ic:"1",l:"Keşif"},{ic:"2",l:"Geliştirme"},{ic:"3",l:"Doğrulama"},{ic:"🚀",l:"Lansman"},{ic:"🔄",l:"Öğrenme"}];
 const wait=ms=>new Promise(r=>setTimeout(r,ms*S.speed));
 
 function buildMap(){mapEl.innerHTML="";MAP.forEach(m=>{const d=document.createElement("div");d.className="node";d.innerHTML=`<span class="ic">${m.ic}</span>${m.l}`;mapEl.appendChild(d);});}
@@ -272,9 +272,9 @@ function metrics(){$("#mPhase").textContent=Math.max(0,Math.min(S.phase+1,3))+"/
 function reset(){
   S={idea:+$("#ideaSel").value,phase:-1,iter:0,days:0,dec:0,running:false,speed:+$("#speedSel").value};
   buildMap();setMap(0);logEl.innerHTML="";metrics();
-  scNum.textContent="GİRDİ";scTitle.textContent="Fikir Kaynakları";scIdea.textContent="💡 "+IDEAS[S.idea].short;
+  scNum.textContent="ENTEGRASYON";scTitle.textContent="Mevcut Yazılıma Bağlı";scIdea.textContent="💡 "+IDEAS[S.idea].short;
   scBody.innerHTML="";
-  setNote("S","Hazır","Başlat’a basın; süreç fikir kaynaklarından başlayacak.");
+  setNote("S","Hazır","Başlat’a basın; SOLAK, mevcut fikir yönetim yazılımınızdaki fikri alarak başlayacak.");
   $("#intro").style.display="";$("#sim").classList.remove("on");
 }
 
@@ -288,18 +288,19 @@ async function start(){
 
 async function inputStage(){
   setMap(0);
-  scNum.textContent="GİRDİ KATMANI";scTitle.textContent="Fikir Kaynakları → AI Fikir Havuzu";
-  setNote("S","Fikir üç kaynaktan gelir","İnsan fikirleri, üretken AI’ın türettiği fikirler ve pazar sinyalleri tek bir havuzda toplanır. AI bunları puanlayıp önceliklendirir — süreç stratejik hizalama (S) ile başlar.");
+  scNum.textContent="ENTEGRASYON";scTitle.textContent="Mevcut Fikir Yönetim Yazılımı → SOLAK AI";
+  setNote("S","SOLAK mevcut yazılıma bağlanır","Fırsat tanımlama ve fikir toplama, kullandığınız fikir yönetim (idea management) yazılımında yapılır. SOLAK oraya bağlanır, fikirleri alır ve AI ile stratejik öncelik verir (İlke S). SOLAK bir başlangıç noktası değil, mevcut yazılımın AI katmanıdır.");
   scBody.innerHTML=`
-    <div class="objective">Girdi katmanı, fikri sürece <b>stratejik bir öncelikle</b> sokar. Üç kaynak birleşir, AI otomatik puanlar.</div>
-    <div class="block-lbl">Kaynaklar</div>
-    <div class="check pending" id="s0"><span class="st"></span><div><div class="ct">👤 İnsan kaynaklı fikir</div><div class="cw">Ekip / müşteri / paydaş önerisi</div></div></div>
-    <div class="check pending" id="s1"><span class="st"></span><div><div class="ct">🤖 AI fikir üretimi</div><div class="cw">Üretken AI ile senaryo türetme</div></div></div>
-    <div class="check pending" id="s2"><span class="st"></span><div><div class="ct">📡 Pazar & trend sinyalleri</div><div class="cw">Rakip / patent / sosyal veri taraması</div></div></div>`;
+    <div class="objective">SOLAK, <b>mevcut fikir yönetim yazılımınıza</b> bağlanır. Fırsat tanımlama + fikir orada yapılır; SOLAK bu fikri alıp AI ile zenginleştirir ve önceliklendirir.</div>
+    <div class="block-lbl">Mevcut Yazılımdan Gelen</div>
+    <div class="check pending" id="s0"><span class="st"></span><div><div class="ct">🗂️ Yazılımdaki fikir (fırsat tanımlanmış)</div><div class="cw">Fırsat tanımlama + fikir toplama mevcut yazılımda yapıldı</div></div></div>
+    <div class="block-lbl">SOLAK AI Katmanının Eklediği</div>
+    <div class="check pending" id="s1"><span class="st"></span><div><div class="ct">🤖 AI zenginleştirme</div><div class="cw">Benzer fikirleri birleştirme + senaryo türetme</div></div></div>
+    <div class="check pending" id="s2"><span class="st"></span><div><div class="ct">📡 AI puanlama & önceliklendirme</div><div class="cw">Pazar / rakip / trend sinyaliyle otomatik skor</div></div></div>`;
   const idea=IDEAS[S.idea];
-  log("SİSTEM","t-sys",`“${idea.name}” fikri sürece girdi.`);
+  log("SİSTEM","t-sys",`“${idea.name}” fikri <b>mevcut fikir yönetim yazılımından</b> SOLAK'a alındı.`);
   for(let i=0;i<3;i++){const el=$("#s"+i);el.classList.remove("pending");el.classList.add("run");await wait(650);el.classList.remove("run");el.classList.add("pass");el.querySelector(".st").textContent="✓";await wait(120);}
-  log("AI","t-ai","Üç kaynak <b>AI Fikir Havuzu</b>'nda birleşti; fikir puanlanıp önceliklendirildi.");
+  log("AI","t-ai","SOLAK AI katmanı fikri zenginleştirdi, puanladı ve önceliklendirdi.");
   await wait(700);
   runPhase(0);
 }
