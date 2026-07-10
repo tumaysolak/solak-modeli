@@ -3,43 +3,123 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SOLAK™ Modeli — İnteraktif Metodoloji Simülasyonu</title>
+<title>SOLAK™ Modeli — Mevcut Fikir Yönetim Yazılımları için AI Entegrasyon Katmanı</title>
+<meta name="description" content="SOLAK™ Modeli: mevcut fikir yönetim yazılımlarına eklenen yapay zeka entegrasyon katmanı. AI-Fit skoru, ajan seçimi, insan onay noktaları ve lansman sonrası sürekli iyileştirme.">
 <style>
   :root{
     --ink:#1f2a37;--muted:#64748b;--line:#dbe3ee;
     --ai:#2f855a;--ai-bg:#eaf7ef;--human:#9a3b5a;--human-bg:#fbeef2;
-    --stage:#1f4e79;--kill:#b45309;--kill-bg:#fdf2e3;--gov:#6d28d9;--gov-bg:#f1ecfb;--loop:#0e7490;--loop-bg:#e6f4f7;
+    --stage:#1f4e79;--navy-d:#14345a;--kill:#b45309;--kill-bg:#fdf2e3;
+    --gov:#6d28d9;--gov-bg:#f1ecfb;--loop:#0e7490;--loop-bg:#e6f4f7;
     --bg:#eef2f8;--card:#fff;
   }
   *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
   html,body{margin:0;}
-  body{font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.5;}
-  .wrap{max-width:1080px;margin:0 auto;padding:18px 14px 60px;}
-  header{text-align:center;margin-bottom:12px;}
-  h1{margin:0;font-size:23px;font-weight:800;color:var(--stage);letter-spacing:-.4px;}
-  h1 .tm{font-size:11px;vertical-align:super;color:var(--gov);}
-  .tagline{margin:4px 0 0;font-size:12.5px;color:var(--muted);}
+  body{font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;background:#fff;color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.6;}
+  .container{max-width:1120px;margin:0 auto;padding:0 20px;}
+  a{color:inherit;}
 
-  .intro{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 2px 10px rgba(16,24,40,.06);}
-  .intro h2{margin:0 0 6px;font-size:17px;color:var(--stage);}
-  .intro p{margin:0 0 12px;font-size:13.5px;color:#41505f;}
-  .princhips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px;}
-  .chip{display:flex;align-items:center;gap:8px;background:#f6f8fc;border:1px solid var(--line);border-radius:10px;padding:7px 10px;font-size:12px;flex:1 1 190px;}
-  .chip>b{width:22px;height:22px;flex:0 0 22px;border-radius:6px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;}
-  .chip span b{color:var(--stage);}
-  .newbox{background:#f1ecfb;border:1px solid #d8c9f2;border-radius:10px;padding:10px 12px;font-size:12.5px;color:#4c2a96;margin-bottom:12px;}
-  .newbox b{color:#3b1f78;}
-  .setup{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  /* ---------- NAV ---------- */
+  .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  .nav .in{display:flex;align-items:center;gap:18px;height:62px;}
+  .brand{display:flex;align-items:center;gap:9px;font-weight:800;color:var(--stage);text-decoration:none;font-size:16px;letter-spacing:-.2px;}
+  .brand .mark{background:var(--stage);color:#fff;border-radius:7px;padding:5px 9px;font-size:13px;font-weight:800;letter-spacing:1.5px;}
+  .brand .tm{font-size:9px;vertical-align:super;color:#cfe0f5;}
+  .nav nav{margin-left:auto;display:flex;gap:22px;}
+  .nav nav a{text-decoration:none;font-size:13.5px;font-weight:600;color:var(--muted);transition:.2s;}
+  .nav nav a:hover{color:var(--stage);}
+  .nav .cta{background:var(--stage);color:#fff;padding:9px 16px;border-radius:9px;font-size:13.5px;font-weight:700;text-decoration:none;transition:.2s;}
+  .nav .cta:hover{filter:brightness(1.1);}
+  @media(max-width:820px){.nav nav{display:none;} .nav .cta{margin-left:auto;}}
+
+  /* ---------- HERO ---------- */
+  .hero{background:var(--navy-d);background-image:radial-gradient(circle at 85% 15%,rgba(109,40,217,.35),transparent 45%),radial-gradient(circle at 10% 90%,rgba(31,78,121,.6),transparent 50%);color:#fff;padding:76px 0 68px;position:relative;overflow:hidden;}
+  .hero .badge{display:inline-block;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#cfe0f5;font-size:12px;font-weight:700;padding:6px 13px;border-radius:20px;letter-spacing:.4px;margin-bottom:20px;}
+  .hero h1{margin:0 0 16px;font-size:42px;line-height:1.15;font-weight:800;letter-spacing:-1px;max-width:840px;}
+  .hero h1 .tm{font-size:16px;vertical-align:super;color:#a78bfa;}
+  .hero p{margin:0 0 28px;font-size:17px;color:#cbd8ea;max-width:700px;}
+  .hero .btns{display:flex;gap:12px;flex-wrap:wrap;}
+  .hbtn{display:inline-block;text-decoration:none;font-weight:700;font-size:15px;padding:14px 24px;border-radius:11px;transition:.2s;}
+  .hbtn.p{background:#fff;color:var(--stage);}
+  .hbtn.p:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(0,0,0,.25);}
+  .hbtn.s{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.35);}
+  .hbtn.s:hover{background:rgba(255,255,255,.1);}
+  .hstats{display:flex;gap:34px;margin-top:44px;flex-wrap:wrap;}
+  .hstat .v{font-size:26px;font-weight:800;color:#fff;}
+  .hstat .l{font-size:12.5px;color:#9fb6d6;}
+  @media(max-width:700px){.hero h1{font-size:31px;} .hero{padding:54px 0 48px;}}
+
+  /* ---------- SECTIONS ---------- */
+  section{padding:66px 0;}
+  section.alt{background:var(--bg);}
+  .eyebrow{font-size:12px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:var(--gov);margin-bottom:8px;}
+  h2.sec{font-size:31px;font-weight:800;color:var(--stage);margin:0 0 14px;letter-spacing:-.6px;}
+  .lead{font-size:16px;color:#4a5a6d;max-width:760px;margin:0 0 34px;}
+
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  @media(max-width:860px){.two{grid-template-columns:1fr;}}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px 24px;box-shadow:0 2px 10px rgba(16,24,40,.05);}
+  .panel.gov{background:var(--gov-bg);border-color:#d8c9f2;}
+  .panel.ai{background:var(--ai-bg);border-color:#bfe3cc;}
+  .panel h3{margin:0 0 8px;font-size:18px;color:var(--stage);}
+  .panel.gov h3{color:var(--gov);} .panel.ai h3{color:var(--ai);}
+  .panel ul{margin:10px 0 0;padding-left:20px;font-size:14.5px;color:#41505f;}
+  .panel li{margin-bottom:6px;}
+  .panel p{font-size:14.5px;color:#41505f;margin:0;}
+  .tagpill{display:inline-block;font-size:11.5px;font-weight:700;border-radius:20px;padding:3px 11px;margin-top:12px;}
+  .tagpill.no{background:#fff;border:1px solid #d8c9f2;color:var(--gov);}
+  .tagpill.yes{background:#fff;border:1px solid #bfe3cc;color:var(--ai);}
+
+  .quote{margin-top:30px;background:linear-gradient(100deg,var(--stage),var(--gov));background-color:var(--stage);color:#fff;border-radius:16px;padding:20px 26px;font-size:18px;font-weight:700;font-style:italic;text-align:center;}
+
+  /* principles */
+  .pgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;}
+  @media(max-width:980px){.pgrid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:520px){.pgrid{grid-template-columns:1fr;}}
+  .pcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;transition:.25s;}
+  .pcard:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(16,24,40,.09);}
+  .pcard .L{width:38px;height:38px;border-radius:10px;color:#fff;font-weight:800;font-size:20px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;}
+  .pcard h4{margin:0 0 5px;font-size:15px;color:var(--stage);}
+  .pcard p{margin:0;font-size:12.8px;color:var(--muted);line-height:1.5;}
+
+  /* mechanisms */
+  .mgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  @media(max-width:900px){.mgrid{grid-template-columns:1fr;}}
+  .mcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;position:relative;box-shadow:0 2px 10px rgba(16,24,40,.05);}
+  .mcard .num{font-size:12px;font-weight:800;color:var(--gov);letter-spacing:1px;}
+  .mcard h3{margin:6px 0 10px;font-size:19px;color:var(--stage);}
+  .mcard p{margin:0 0 12px;font-size:14px;color:#41505f;}
+  .fitrow{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;padding:5px 0;border-bottom:1px dashed var(--line);}
+  .fitrow:last-child{border-bottom:none;}
+  .fitrow b{font-weight:800;}
+  .g{color:var(--ai);} .y{color:#b58105;} .r{color:var(--kill);}
+
+  /* phases strip */
+  .phases{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;}
+  .ph{flex:1 0 auto;min-width:160px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;}
+  .ph .n{font-size:11px;font-weight:800;letter-spacing:.8px;color:var(--gov);}
+  .ph h4{margin:5px 0 6px;font-size:15px;color:var(--stage);}
+  .ph p{margin:0;font-size:12.5px;color:var(--muted);}
+  .ph.last{background:var(--loop-bg);border-color:#bfe8f0;}
+  .ph.last .n,.ph.last h4{color:var(--loop);}
+
+  /* ---------- SIMULATION (app) ---------- */
+  .simwrap{background:var(--bg);}
   select,button{font-family:inherit;font-size:14px;border-radius:10px;border:1px solid var(--line);padding:11px 14px;cursor:pointer;}
-  select{background:#fff;color:var(--ink);font-weight:600;flex:1 1 260px;min-width:200px;}
+  select{background:#fff;color:var(--ink);font-weight:600;flex:1 1 280px;min-width:200px;}
   .btn{font-weight:700;border:none;color:#fff;background:var(--stage);transition:.2s;}
   .btn:hover{filter:brightness(1.08);} .btn:active{transform:scale(.98);}
   .btn.ghost{background:#fff;color:var(--stage);border:1.5px solid var(--stage);}
   .speed{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);}
   .speed select{flex:0 0 auto;min-width:0;padding:8px 10px;font-size:12.5px;}
+  .setupcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 2px 10px rgba(16,24,40,.05);}
+  .setupcard .sl{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#94a3b8;margin-bottom:10px;}
+  .setup{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .hint{font-size:12.5px;color:var(--muted);margin-top:12px;}
 
-  .sim{display:none;} .sim.on{display:block;}
-  .map{display:flex;gap:4px;margin:14px 0 12px;overflow-x:auto;padding-bottom:4px;}
+  .sim{display:none;margin-top:18px;} .sim.on{display:block;}
+  .map{display:flex;gap:4px;margin:0 0 12px;overflow-x:auto;padding-bottom:4px;}
   .node{flex:1 0 auto;min-width:78px;text-align:center;background:#fff;border:1px solid var(--line);border-radius:11px;padding:8px 5px;font-size:10.5px;font-weight:700;color:#5a6b7d;transition:.3s;}
   .node .ic{font-size:16px;display:block;margin-bottom:2px;}
   .node.active{background:var(--stage);color:#fff;border-color:var(--stage);transform:translateY(-2px);box-shadow:0 5px 12px rgba(31,78,121,.28);}
@@ -54,7 +134,7 @@
   .metric.fit .v{color:var(--gov);}
 
   .grid{display:grid;grid-template-columns:1fr 320px;gap:12px;align-items:start;}
-  @media(max-width:820px){.grid{grid-template-columns:1fr;}}
+  @media(max-width:900px){.grid{grid-template-columns:1fr;}}
 
   .stage-card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 2px 8px rgba(16,24,40,.06);overflow:hidden;}
   .sc-head{padding:12px 15px;color:#fff;background:var(--stage);display:flex;align-items:center;justify-content:space-between;gap:10px;}
@@ -77,7 +157,6 @@
   .check.warn{background:var(--kill-bg);border-color:#f0c893;} .check.warn .ct{color:#8a4008;} .check.warn .st{background:var(--kill);border-color:var(--kill);}
   @keyframes spin{to{transform:rotate(360deg);}}
 
-  /* AI-Fit & skor barlar */
   .scorebox{background:#f1ecfb;border:1px solid #d8c9f2;border-radius:10px;padding:11px 12px;}
   .scorebox .sh{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:800;color:var(--gov);}
   .scorebox .sv{font-size:15px;font-weight:800;color:var(--gov);}
@@ -88,10 +167,9 @@
   .bm{font-size:10.5px;background:#fff;border:1px solid #d8c9f2;border-radius:20px;padding:3px 9px;color:#5b3aa8;font-weight:600;}
 
   .portfolio{background:#eef2f9;border:1px solid #cfdcef;border-radius:10px;padding:10px 12px;}
-  .portfolio .ph{font-size:12.5px;font-weight:700;color:var(--stage);display:flex;justify-content:space-between;}
+  .portfolio .ph2{font-size:12.5px;font-weight:700;color:var(--stage);display:flex;justify-content:space-between;}
   .portfolio .bar{background:#dbe4f1;} .portfolio .fill{background:linear-gradient(90deg,#2f855a,#1f4e79);}
 
-  /* AJAN SEÇİMİ */
   .agents{display:flex;flex-direction:column;gap:8px;}
   .acard{display:flex;align-items:center;gap:10px;background:#eafcff;border:1.5px solid #bfe8f0;border-radius:11px;padding:10px 12px;cursor:pointer;transition:.2s;}
   .acard:hover{border-color:var(--loop);transform:translateY(-1px);}
@@ -132,7 +210,6 @@
   .gate-btns button{flex:1 1 30%;font-size:13px;padding:11px 8px;}
   .g-yes{background:var(--ai);} .g-ref{background:var(--kill);} .g-kill{background:#64748b;}
 
-  /* FAZ 5 */
   .cycle{background:var(--loop-bg);border:1px solid #bfe8f0;border-radius:10px;padding:11px 12px;}
   .cycle .ch{font-size:12.5px;font-weight:800;color:#0b5566;}
   .day{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #bfe8f0;border-radius:10px;padding:9px 11px;margin-top:7px;opacity:.45;transition:.35s;}
@@ -167,32 +244,143 @@
   .t-kill{background:var(--kill);}.t-loop{background:var(--loop);}.t-gov{background:var(--gov);}
   @keyframes slideIn{from{opacity:0;transform:translateX(-6px);}to{opacity:1;transform:none;}}
   .controls2{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;justify-content:center;}
-  footer{margin-top:20px;text-align:center;font-size:11px;color:#94a3b8;}
+
+  /* ---------- FOOTER ---------- */
+  footer.site{background:var(--navy-d);color:#9fb6d6;padding:44px 0 30px;}
+  footer.site .fin{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:flex-start;}
+  footer.site .fb{font-size:18px;font-weight:800;color:#fff;margin-bottom:6px;}
+  footer.site .fq{font-size:13.5px;font-style:italic;color:#cbd8ea;max-width:420px;}
+  footer.site .fl{font-size:13px;line-height:2;}
+  footer.site .fl a{color:#9fb6d6;text-decoration:none;} footer.site .fl a:hover{color:#fff;}
+  footer.site .cr{border-top:1px solid rgba(255,255,255,.12);margin-top:28px;padding-top:18px;font-size:12px;text-align:center;}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <h1>SOLAK<span class="tm">™</span> Modeli — İnteraktif Metodoloji Simülasyonu</h1>
-    <p class="tagline">Mevcut fikir yönetim yazılımları için <b>yapay zekâ entegrasyon katmanı</b>. Fikri seçin; AI-Fit skorunu, ajan seçimini ve lansman sonrası iyileştirme döngüsünü canlı izleyin.</p>
-  </header>
 
-  <div class="intro" id="intro">
-    <h2>Bu simülasyon ne gösterir?</h2>
-    <p>SOLAK, sıfırdan bir süreç değildir. <b>Fırsat tanımlama ve fikir toplamayı mevcut fikir yönetim (idea management) yazılımınıza bırakır</b>; oradaki fikri alıp <b>yapay zekâ</b> ile değerlendirir, geliştirir, doğrular, lansmana taşır ve <b>lansman sonrası sürekli iyileştirir</b> — kritik kararları <b>insan</b> verir.</p>
-    <div class="princhips">
-      <div class="chip"><b style="background:#1f4e79">S</b> <span><b>Stratejik Hizalama</b> — fikir stratejiyle test edilir</span></div>
-      <div class="chip"><b style="background:#6d28d9">O</b> <span><b>Orkestrasyon</b> — doğru AI ajanı seçilir ve yürütür</span></div>
-      <div class="chip"><b style="background:#0e7490">L</b> <span><b>Öğrenme Döngüsü</b> — veri fikre geri döner</span></div>
-      <div class="chip"><b style="background:#2f855a">A</b> <span><b>AI Güçlendirmesi</b> — AI otomatik değerlendirir</span></div>
-      <div class="chip"><b style="background:#9a3b5a">K</b> <span><b>Bilgi Temelli Onay</b> — insan veriyle karar verir</span></div>
+<!-- NAV -->
+<div class="nav"><div class="container in">
+  <a class="brand" href="#top"><span class="mark">SOLAK<span class="tm">™</span></span> Modeli</a>
+  <nav>
+    <a href="#nedir">Nedir?</a>
+    <a href="#ilkeler">İlkeler</a>
+    <a href="#mekanizmalar">Mekanizmalar</a>
+    <a href="#fazlar">Fazlar</a>
+  </nav>
+  <a class="cta" href="#simulasyon">Simülasyonu Dene</a>
+</div></div>
+
+<!-- HERO -->
+<div class="hero" id="top"><div class="container">
+  <span class="badge">MEVCUT FİKİR YÖNETİM YAZILIMLARI İÇİN AI ENTEGRASYON KATMANI</span>
+  <h1>SOLAK<span class="tm">™</span> Modeli — inovasyonu yapay zeka ile hızlandırın, kararı insanda bırakın.</h1>
+  <p>SOLAK sıfırdan bir süreç değildir. Fırsat tanımlama ve fikir toplamayı mevcut fikir yönetim yazılımınıza bırakır; oradaki fikri alıp beş fazlı bir süreçte AI ile değerlendirir, geliştirir, doğrular, lansmana taşır ve lansman sonrası sürekli iyileştirir.</p>
+  <div class="btns">
+    <a class="hbtn p" href="#simulasyon">▶ İnteraktif simülasyonu çalıştır</a>
+    <a class="hbtn s" href="#nedir">Modeli incele</a>
+  </div>
+  <div class="hstats">
+    <div class="hstat"><div class="v">5</div><div class="l">Faz (lansman sonrası dahil)</div></div>
+    <div class="hstat"><div class="v">AI-Fit</div><div class="l">Fikrin AI ile yapılabilme skoru</div></div>
+    <div class="hstat"><div class="v">S·O·L·A·K</div><div class="l">Beş temel ilke</div></div>
+    <div class="hstat"><div class="v">İnsan</div><div class="l">Kritik kararların sahibi</div></div>
+  </div>
+</div></div>
+
+<!-- NEDİR -->
+<section id="nedir"><div class="container">
+  <div class="eyebrow">Konumlandırma</div>
+  <h2 class="sec">Mevcut yazılımların yerine değil — üstüne</h2>
+  <p class="lead">SOLAK, kuruluşların halihazırda kullandığı fikir yönetim (idea management) yazılımlarını değiştirmez. Onların yaptığı işin üstüne yapay zeka zekası ekler ve fikri lansmana, oradan da sürekli iyileştirmeye taşır.</p>
+  <div class="two">
+    <div class="panel gov">
+      <h3>Mevcut Fikir Yönetim Yazılımı</h3>
+      <p>Kuruluşunuzda zaten var ve çalışıyor.</p>
+      <ul><li>Fırsat tanımlama</li><li>Fikir toplama ve oylama</li><li>Portföy görünürlüğü</li></ul>
+      <span class="tagpill no">SOLAK bunları değiştirmez</span>
     </div>
-    <div class="newbox">
-      <b>Bu sürümdeki üç yeni mekanizma:</b><br>
-      <b>1) AI-Fit Skoru</b> — fikrin ne kadarının yapay zekâ ile yürütülebileceğini ölçer (satın alma ~%93, talent/İK ~%54). Ajan otonomisini ve insan onay yoğunluğunu belirler.<br>
-      <b>2) Ajan Öneri &amp; Seçim Noktası</b> — AI aday ajanları uygunluk skoruyla önerir, <b>seçimi siz yaparsınız</b>. Yanlış ajan → düşük performans → <b>ajan iyileştirme döngüsü</b>.<br>
-      <b>3) Faz 5 — Lansman Sonrası Sürekli İyileştirme</b> — 30/60/90 gün periyodik kontrol, geri bildirim ve karar: iyileştir · ölçekle · emekli et.
+    <div class="panel ai">
+      <h3>SOLAK AI Entegrasyon Katmanı</h3>
+      <p>Mevcut yazılımın çıktısı olan fikri devralır.</p>
+      <ul><li>AI-Fit skoru ile uygulanabilirlik ölçümü</li><li>Doğru AI ajanının önerilmesi ve seçilmesi</li><li>AI değerlendirme, geliştirme, doğrulama</li><li>İnsan onay noktaları ve lansman</li><li>Lansman sonrası sürekli iyileştirme</li></ul>
+      <span class="tagpill yes">SOLAK bunları ekler</span>
     </div>
+  </div>
+  <div class="quote">“AI önerir ve hızlandırır; insan yön verir ve karar verir.”</div>
+</div></section>
+
+<!-- İLKELER -->
+<section id="ilkeler" class="alt"><div class="container">
+  <div class="eyebrow">DNA</div>
+  <h2 class="sec">Beş temel ilke: S · O · L · A · K</h2>
+  <p class="lead">Modelin adı, eser sahibinin soyadından türer ve aynı zamanda katmanın beş temel ilkesini özetler: <i>Strategic Orchestration of Learning, AI &amp; Knowledge</i>.</p>
+  <div class="pgrid">
+    <div class="pcard"><div class="L" style="background:#1f4e79">S</div><h4>Stratejik Hizalama</h4><p>Her fikir, şirket stratejisiyle uyumu üzerinden test edilir.</p></div>
+    <div class="pcard"><div class="L" style="background:#6d28d9">O</div><h4>Orkestrasyon</h4><p>Her faz için doğru AI ajanı önerilir, insan tarafından seçilir ve sprintlerle yürütülür.</p></div>
+    <div class="pcard"><div class="L" style="background:#0e7490">L</div><h4>Öğrenme Döngüsü</h4><p>Lansman sonrası veri fikir havuzuna geri beslenir; sistem sürekli öğrenir.</p></div>
+    <div class="pcard"><div class="L" style="background:#2f855a">A</div><h4>AI Güçlendirmesi</h4><p>Her fazda AI kontrolleri otomatik değerlendirir ve iterasyon yapar.</p></div>
+    <div class="pcard"><div class="L" style="background:#9a3b5a">K</div><h4>Bilgi Temelli Onay</h4><p>İnsan onay noktaları, AI'ın ürettiği verilerle beslenerek karar verir.</p></div>
+  </div>
+</div></section>
+
+<!-- MEKANİZMALAR -->
+<section id="mekanizmalar"><div class="container">
+  <div class="eyebrow">Ayırt edici mekanizmalar</div>
+  <h2 class="sec">Modeli farklı kılan üç mekanizma</h2>
+  <p class="lead">SOLAK'ı “AI destekli bir süreç” olmaktan çıkarıp işleyen bir sisteme dönüştüren üç unsur.</p>
+  <div class="mgrid">
+    <div class="mcard">
+      <div class="num">01</div>
+      <h3>🧮 AI-Fit Skoru</h3>
+      <p>Her fikir eşit ölçüde AI'lanamaz. Skor, fikrin ne kadarının yapay zeka ile yürütülebileceğini ölçer; ajan otonomisini ve insan onay yoğunluğunu belirler.</p>
+      <div class="fitrow"><span>Satın alma / tedarik</span><b class="g">~%93</b></div>
+      <div class="fitrow"><span>Eğitim / içerik</span><b class="g">~%88</b></div>
+      <div class="fitrow"><span>Operasyon</span><b class="y">~%78</b></div>
+      <div class="fitrow"><span>Ürün / tedarik</span><b class="y">~%72</b></div>
+      <div class="fitrow"><span>Talent / İK</span><b class="r">~%54</b></div>
+    </div>
+    <div class="mcard">
+      <div class="num">02</div>
+      <h3>🔷 Ajan Öneri &amp; Seçim Noktası</h3>
+      <p>Orkestrasyonun kalbi, işi yapacak doğru ajanı seçmektir. AI aday ajanları uygunluk skoruyla önerir; <b>seçimi insan yapar</b>.</p>
+      <div class="fitrow"><span>Pazar &amp; Rakip Araştırma Ajanı</span><b class="g">%92</b></div>
+      <div class="fitrow"><span>Trend Sinyal Ajanı</span><b class="y">%78</b></div>
+      <div class="fitrow"><span>Genel Amaçlı Asistan</span><b class="r">%56</b></div>
+      <p style="margin-top:12px;font-size:13px;color:var(--kill);"><b>Ajan İyileştirme Döngüsü:</b> performans eşiğin (70) altındaysa faz ilerlemez — ajan yeniden eğitilir ya da değiştirilir.</p>
+    </div>
+    <div class="mcard">
+      <div class="num">03</div>
+      <h3>🔁 Faz 5 — Sürekli İyileştirme</h3>
+      <p>Lansman bir bitiş değil, bir başlangıçtır. SOLAK ürünü düzenli aralıklarla ölçer ve kararı insana taşır.</p>
+      <div class="fitrow"><span>30. gün</span><span>Kullanım &amp; benimseme</span></div>
+      <div class="fitrow"><span>60. gün</span><span>Geri bildirim (NPS)</span></div>
+      <div class="fitrow"><span>90. gün</span><span>KPI &amp; iş etkisi</span></div>
+      <p style="margin-top:12px;font-size:13px;color:var(--loop);"><b>Karar:</b> İyileştir · Ölçekle · Emekli et — her durumda öğrenilenler fikir havuzuna geri döner.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- FAZLAR -->
+<section id="fazlar" class="alt"><div class="container">
+  <div class="eyebrow">Kuşbakışı</div>
+  <h2 class="sec">Beş faz, tek akış</h2>
+  <p class="lead">Fikir mevcut yazılımdan alınır, AI-Fit skoru hesaplanır ve beş fazlı süreçten geçer. Her fazda ajan seçimi, AI değerlendirme ve insan onay noktası vardır.</p>
+  <div class="phases">
+    <div class="ph"><div class="n">FAZ 1</div><h4>Keşif</h4><p>Strateji, arzu edilirlik ve bütçe uyumu test edilir.</p></div>
+    <div class="ph"><div class="n">FAZ 2</div><h4>Geliştirme</h4><p>Hipotez, prototip ve iş modeli olgunlaşır.</p></div>
+    <div class="ph"><div class="n">FAZ 3</div><h4>Doğrulama</h4><p>PoC, pilot ve testlerle kanıt toplanır.</p></div>
+    <div class="ph"><div class="n">FAZ 4</div><h4>Lansman</h4><p>Ürün pazara sunulur, AI performansı izler.</p></div>
+    <div class="ph last"><div class="n">FAZ 5</div><h4>Sürekli İyileştirme</h4><p>30/60/90 gün kontrol, geri bildirim ve karar döngüsü.</p></div>
+  </div>
+</div></section>
+
+<!-- SİMÜLASYON -->
+<section id="simulasyon" class="simwrap"><div class="container">
+  <div class="eyebrow">İnteraktif</div>
+  <h2 class="sec">Modeli canlı deneyin</h2>
+  <p class="lead">Bir fikir seçin ve süreci adım adım izleyin. Ajanı siz seçersiniz, onayı siz verirsiniz. İpucu: <b>Satın Alma</b> (yüksek AI-Fit) ile <b>Talent/İK</b> (düşük AI-Fit) fikirlerini karşılaştırın; ayrıca “Genel Amaçlı Asistan”ı seçip ajan iyileştirme döngüsünü görün.</p>
+
+  <div class="setupcard" id="intro">
+    <div class="sl">Simülasyonu yapılandır</div>
     <div class="setup">
       <select id="ideaSel" aria-label="Örnek fikir"></select>
       <span class="speed">Hız
@@ -200,6 +388,7 @@
       </span>
       <button class="btn" id="startBtn">▶ Simülasyonu Başlat</button>
     </div>
+    <p class="hint">Her adımda sağdaki <b>Metodoloji Notu</b> panelinde hangi SOLAK ilkesinin çalıştığını göreceksiniz.</p>
   </div>
 
   <div class="sim" id="sim">
@@ -211,7 +400,6 @@
       <div class="metric"><div class="v" id="mDays">0</div><div class="l">≈ gün kazanıldı</div></div>
       <div class="metric"><div class="v" id="mDec">0</div><div class="l">İnsan kararı</div></div>
     </div>
-
     <div class="grid">
       <div class="stage-card">
         <div class="sc-head">
@@ -220,13 +408,12 @@
         </div>
         <div class="sc-body" id="scBody"></div>
       </div>
-
       <div class="side">
         <div class="note" id="note">
           <div class="k" id="noteK">S</div>
           <div class="nk" id="noteKlabel">Metodoloji Notu</div>
           <div class="nt" id="noteTitle">Hazır</div>
-          <div class="nx" id="noteText">Başlat’a basın; SOLAK, mevcut yazılımınızdaki fikri alarak başlayacak.</div>
+          <div class="nx" id="noteText">Başlat'a basın; SOLAK, mevcut yazılımınızdaki fikri alarak başlayacak.</div>
         </div>
         <div class="legendbox">
           <b>Renk anahtarı</b>
@@ -239,12 +426,27 @@
         </div>
       </div>
     </div>
-
     <div class="log"><h3>İşlem Günlüğü</h3><ul id="logList"></ul></div>
     <div class="controls2"><button class="btn ghost" id="restartBtn">↻ Yeni Fikir / Baştan</button></div>
   </div>
-  <footer>SOLAK™ Modeli · “AI önerir ve hızlandırır; insan yön verir ve karar verir.” · © 2026 Tumay Solak</footer>
-</div>
+</div></section>
+
+<!-- FOOTER -->
+<footer class="site"><div class="container">
+  <div class="fin">
+    <div>
+      <div class="fb">SOLAK™ Modeli</div>
+      <div class="fq">“AI önerir ve hızlandırır; insan yön verir ve karar verir.”</div>
+    </div>
+    <div class="fl">
+      <a href="#nedir">Nedir?</a><br>
+      <a href="#ilkeler">Beş İlke</a><br>
+      <a href="#mekanizmalar">Mekanizmalar</a><br>
+      <a href="#simulasyon">Simülasyon</a>
+    </div>
+  </div>
+  <div class="cr">© 2026 Tumay Solak · SOLAK™ tescilli markadır · Tüm hakları saklıdır.</div>
+</div></footer>
 
 <script>
 const IDEAS=[
@@ -300,7 +502,7 @@ const PHASES=[
       {t:"Tüm testler olumlu",w:"Kalite ve performans eşiği geçildi mi?"},
     ],
     gate:"Lansmana geç?", gateWhy:"Kanıtlar olumlu. Tam lansmanın ticari riskini insan değerlendirir.",
-    note:{k:"K",t:"Bilgi temelli onay",x:"AI kararı vermez; kararı besler. İnsan onay noktasına AI’ın topladığı kanıt özeti gelir — sezgi değil, veri temelli karar."},
+    note:{k:"K",t:"Bilgi temelli onay",x:"AI kararı vermez; kararı besler. İnsan onay noktasına AI'ın topladığı kanıt özeti gelir — sezgi değil, veri temelli karar."},
     days:20 },
 ];
 
@@ -329,7 +531,7 @@ function reset(){
   buildMap();setMap(0);logEl.innerHTML="";metrics();
   scNum.textContent="ENTEGRASYON";scTitle.textContent="Mevcut Yazılıma Bağlı";scIdea.textContent="💡 "+IDEAS[S.idea].short;
   scBody.innerHTML="";
-  setNote("S","Hazır","Başlat’a basın; SOLAK, mevcut fikir yönetim yazılımınızdaki fikri alarak başlayacak.");
+  setNote("S","Hazır","Başlat'a basın; SOLAK, mevcut fikir yönetim yazılımınızdaki fikri alarak başlayacak.");
   $("#intro").style.display="";$("#sim").classList.remove("on");
 }
 
@@ -341,7 +543,6 @@ async function start(){
   await intake();
 }
 
-/* ---------- ENTEGRASYON + AI-FIT ---------- */
 async function intake(){
   setMap(0);
   const idea=IDEAS[S.idea];
@@ -376,7 +577,6 @@ async function intake(){
   runPhase(0);
 }
 
-/* ---------- FAZ 1-3 ---------- */
 function runPhase(pi){
   S.phase=pi;metrics();
   const p=PHASES[pi];
@@ -415,7 +615,6 @@ async function runAgent(pi,ai){
     <div class="agentrun"><div class="ah">⚙️ ${a.n}</div><ul>${a.steps.map((s,i)=>`<li id="ag${i}">${s}</li>`).join("")}</ul></div>
     <div id="perfbox"></div>`;
   for(let i=0;i<a.steps.length;i++){await wait(520);$("#ag"+i).classList.add("done");}
-  // Performans = ajan uygunluğu (0.7) + fikrin AI-Fit'i (0.3)
   const perf=Math.round(a.fit*0.7 + S.fit*0.3);
   log("AI","t-ai",`${a.n} çalışmasını tamamladı. <b>Ajan performans skoru: ${perf}/100</b>`);
   await wait(400);
@@ -451,7 +650,7 @@ async function continueAfterAgent(pi){
     <div class="gov"><div class="gh">🛡️ Etik · gizlilik · önyargı · regülasyon</div>
       <div class="gitems"><span class="gi" id="gv0">Etik</span><span class="gi" id="gv1">Veri gizliliği</span><span class="gi" id="gv2">Önyargı (bias)</span><span class="gi" id="gv3">Regülasyon</span></div></div>
     <div class="block-lbl">📊 Portföy Önceliği</div>
-    <div class="portfolio"><div class="ph"><span>AI portföy skoru</span><span id="pscore">…</span></div><div class="bar"><div class="fill" id="pfill"></div></div></div>
+    <div class="portfolio"><div class="ph2"><span>AI portföy skoru</span><span id="pscore">…</span></div><div class="bar"><div class="fill" id="pfill"></div></div></div>
     <div class="block-lbl">👤 İnsan Onay Noktası</div>
     <div class="gate hidden" id="gate"></div>`);
   const chks=$("#chks");
@@ -495,7 +694,6 @@ async function decide(kind,pi){
   if(pi<PHASES.length-1)runPhase(pi+1);else launch();
 }
 
-/* ---------- FAZ 4 LANSMAN ---------- */
 async function launch(){
   S.phase=3;metrics();setMap(4);
   scNum.textContent="FAZ 4";scTitle.textContent="AI-Destekli Lansman";
@@ -507,7 +705,6 @@ async function launch(){
   postLaunch();
 }
 
-/* ---------- FAZ 5 SÜREKLİ İYİLEŞTİRME ---------- */
 async function postLaunch(){
   S.phase=4;metrics();setMap(5);
   scNum.textContent="FAZ 5";scTitle.textContent="Lansman Sonrası Sürekli İyileştirme";
